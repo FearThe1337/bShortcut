@@ -2,6 +2,7 @@ package com.beecub.bShortcut;
 
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -43,13 +44,17 @@ public class bShortcut extends JavaPlugin {
 	
 	@SuppressWarnings("static-access")
     public boolean onCommand(CommandSender sender, Command c, String commandLabel, String[] args) {
-		PluginDescriptionFile pdfFile = this.getDescription();
-        String command = c.getName().toLowerCase();
-        if (command.equalsIgnoreCase("bShortcut")) {
-            bConfigManager.reload(this);
-            bChat.sendMessageToCommandSender(sender, "&6[" + pdfFile.getName() + "]" + " config reloaded");
-            return true;
-        }
+		if(c.getName().equalsIgnoreCase("bShortcut")) {
+			if(sender.hasPermission("bShortcut.reload")){
+				PluginDescriptionFile pdfFile = this.getDescription();
+		        bConfigManager.reload(this);
+	            bChat.sendMessageToCommandSender(sender, "&6[" + pdfFile.getName() + "]" + " config reloaded");
+	            return true;
+			}else{
+				sender.sendMessage(ChatColor.RED + "You do not have permission to access this command.");
+				return true;				
+			}
+		}
         return false;
 	}
 }
