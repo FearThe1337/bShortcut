@@ -13,17 +13,15 @@ import util.bChat;
 
 
 public class bShortcut extends JavaPlugin {
-	private final bShortcutPlayerListener playerListener;
-	public Logger log;
-	static bChat bChat;
+	private bShortcutPlayerListener playerListener;
+	private final Logger log;
+	private bChat bChat;
+	private bConfigManager configManager;
 
-	public bShortcut(){
-		this.playerListener = new bShortcutPlayerListener(this);
+	public bShortcut(){		
 		this.log = Logger.getLogger("Minecraft");
 	}
 	
-	
-	@SuppressWarnings("static-access")
 	public void onEnable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		PluginManager pm = getServer().getPluginManager();
@@ -33,8 +31,9 @@ public class bShortcut extends JavaPlugin {
 		log.info("[" +  pdfFile.getName() + "]" + " version " + pdfFile.getVersion() + " is enabled!");
 		
 		bChat = new bChat(this.getServer());
-		bConfigManager bConfigManager = new bConfigManager(this);
-		bConfigManager.load(this);	
+		configManager = new bConfigManager(this);
+		configManager.load(this);	
+		playerListener = new bShortcutPlayerListener(this,configManager);
 	}
 	
 	public void onDisable() {
@@ -47,7 +46,7 @@ public class bShortcut extends JavaPlugin {
 		if(c.getName().equalsIgnoreCase("bShortcut")) {
 			if(sender.hasPermission("bShortcut.reload")){
 				PluginDescriptionFile pdfFile = this.getDescription();
-		        bConfigManager.reload(this);
+				configManager.reload(this);
 	            bChat.sendMessageToCommandSender(sender, "&6[" + pdfFile.getName() + "]" + " config reloaded");
 	            return true;
 			}else{

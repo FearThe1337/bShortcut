@@ -9,9 +9,11 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class bShortcutPlayerListener implements Listener {
 	private final bShortcut plugin;
+	private final bConfigManager config;
 
-	public bShortcutPlayerListener(bShortcut instance) {
-		plugin = instance;
+	public bShortcutPlayerListener(bShortcut instance, bConfigManager config) {
+		this.plugin = instance;
+		this.config = config;
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -30,7 +32,7 @@ public class bShortcutPlayerListener implements Listener {
         pre = (String) message.subSequence(0, i);
         message = (String) message.subSequence(i, message.length());
         
-        if(bConfigManager.handleShortcuts(plugin, player, pre, message)) {
+        if(config.handleShortcuts(plugin, player, pre, message)) {
             event.setCancelled(true);
         }
 	}

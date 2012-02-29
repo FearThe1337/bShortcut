@@ -1,6 +1,5 @@
 package com.beecub.bShortcut;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,28 +11,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 import util.bChat;
 
 public class bConfigManager {
-	protected static bShortcut bShortcut;
-    protected File confFile;
-    static List<String> shortcuts = new LinkedList<String>();
-    static List<String> shortcutsImport = new LinkedList<String>();
+	private bShortcut bShortcut;
+    private List<String> shortcuts; 
 	
-	@SuppressWarnings("static-access")
 	public bConfigManager(bShortcut bShortcut) {
     	this.bShortcut = bShortcut;	
+    	this.shortcuts = new LinkedList<String>();
     }
     
-	static void load(bShortcut plugin) {	    
+	public void load(bShortcut plugin) {	    
     	shortcuts.clear();
     	FileConfiguration fc = plugin.getConfig();
     	ConfigurationSection cs = fc.getConfigurationSection("shortcuts.commands");
     	shortcuts = new LinkedList<String>(cs.getKeys(false));
     }
 	
-	static void reload(bShortcut plugin) {
+	public void reload(bShortcut plugin) {
 		load(plugin);
 	}
 		
-	static boolean handleShortcuts(JavaPlugin plugin, Player player, String pre, String message) {
+	public boolean handleShortcuts(JavaPlugin plugin, Player player, String pre, String message) {
 	    List<String> perform = new LinkedList<String>();
         if(shortcuts.contains(pre)) {      
         	FileConfiguration fc = plugin.getConfig();
@@ -45,7 +42,7 @@ public class bConfigManager {
         return false;
 	}
 	
-	static boolean performCommand(JavaPlugin plugin, Player player, List<String> perform, String pre, String message) {
+	public boolean performCommand(JavaPlugin plugin, Player player, List<String> perform, String pre, String message) {
 	    String performMessage;
         if(perform != null && perform.size() > 1) {
             for(int i = 0; i < perform.size(); i++) {
@@ -89,7 +86,7 @@ public class bConfigManager {
         return false;
 	}
 	
-	static String handleVariables(Player player, String performMessage, String message) {
+	public String handleVariables(Player player, String performMessage, String message) {
 	    String[] args = null;
 	    message = message.replaceFirst(" ", "");
 	    args = message.split(" ");
