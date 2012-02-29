@@ -1,0 +1,11 @@
+shortcuts:
+    commands:
+        /cleanstone: /item 1 64
+        /myName:
+          - "My name is &player"
+          - "I am &1 years old"
+        /breload: /bShortcut reload
+        /t: /time &args
+        /g:
+          - /give &1 &2 &3
+          - /m &1 there you got &3 of &2 from me.
